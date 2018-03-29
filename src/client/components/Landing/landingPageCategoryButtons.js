@@ -31,14 +31,60 @@ class LandingPageCategoryButtons extends Component {
   }
 
   handleClick = e => {
-    let category = e.currentTarget.value;
+    let topic = e.currentTarget.value;
+    console.log('this is topic', topic);
+    let allTopics = [
+      ['Algorithm', 'Sort', 'Recursion', 'Asymptomatic Notation', 'Data Structures'],
+      [
+        'System Design',
+        'Principles',
+        'System Design Patterns',
+        'Scalability',
+        'CAP Theorem'
+      ],
+      [
+        'Front End',
+        'ReactJS',
+        'Angular',
+        'JavaScript',
+        'Vue',
+        'Ember',
+        'Redux',
+        'jQuery'
+      ],
+      ['Back End', 'Node/Express', 'PHP', '.NET', 'Ruby on Rails', 'SQL', 'NoSQL', 'Java']
+    ];
+    let category;
+    let getCategoryIndex;
+
+    for (let i = 0; i < allTopics.length; i++) {
+      if (allTopics[i].includes(topic)) getCategoryIndex = i;
+    }
+    // console.log('this is getCategoryIndex', getCategoryIndex);
+    switch (getCategoryIndex) {
+      case 0:
+        category = 'Algorithm';
+        break;
+      case 1:
+        category = 'System Design';
+        break;
+      case 2:
+        category = 'Front End';
+        break;
+      case 3:
+        category = 'Back End';
+        break;
+      default:
+        break;
+    }
+
+    this.props.fetchQuestions(category, topic).then(() => {
+      this.props.history.push('/category');
+    });
+
     // this.props.fetchQuestions(category, () => {
     //   this.props.history.push('/category');
     // });
-
-    this.props.fetchQuestions(category).then(() => {
-      this.props.history.push('/category');
-    });
   };
 
   render() {
@@ -109,8 +155,8 @@ class LandingPageCategoryButtons extends Component {
                 onClick={this.handleClick}
               />
               <RaisedButton
-                label="AngularJS"
-                value="AngularJS"
+                label="Angular"
+                value="Angular"
                 primary={true}
                 style={nested_style}
                 onClick={this.handleClick}
@@ -219,8 +265,8 @@ class LandingPageCategoryButtons extends Component {
                 onClick={this.handleClick}
               />
               <RaisedButton
-                label="PhP"
-                value="PhP"
+                label="PHP"
+                value="PHP"
                 primary={true}
                 style={nested_style}
                 onClick={this.handleClick}

@@ -1,17 +1,29 @@
 // REACT
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router';
 
 // REDUX
 import { connect } from 'react-redux';
+
 // MATERIAL UI
 import RaisedButton from 'material-ui/RaisedButton';
+
 //LODASH
 import _ from 'lodash';
 
+// ACTION CREATOR
+import { fetchQuestion } from './../../actions';
+
 class Category extends Component {
+  handleClick = e => {
+    this.props.fetchQuestion(e);
+    // this.props.fetchQuestion(e).then(() => this.props.history.push('/questionpage'));
+  };
+
   renderCategoryName = () => {
     const data = this.props.category;
+    console.log('this is data!', data);
     let selectedCategory = data[0].results[0].category;
     return selectedCategory;
   };
@@ -26,10 +38,13 @@ class Category extends Component {
       <div id="questionList">
         {arr.map(el => {
           return (
-            <Link to="/questionpage">
-              <li className="list-group-item" key={el.id}>
+            <Link onClick={() => this.handleClick(el)} to="/questionpage" key={el._id}>
+              <button
+                // onClick={() => this.handleClick(el)}
+                type="submit"
+                className="list-group-item btn btn-primary">
                 {el.question}
-              </li>
+              </button>
             </Link>
           );
         })}
@@ -47,7 +62,7 @@ class Category extends Component {
         <div id="categoryTitle">{this.renderCategoryName()}</div>
 
         <div className="question-container container">
-          <ul className="list-group">{this.renderQuestions()}</ul>
+          <form className="list-group">{this.renderQuestions()}</form>
         </div>
 
         <div className="category-back-btn text-xs-left">
@@ -64,4 +79,4 @@ function mapStateToProps(state) {
   return { category: state.category };
 }
 
-export default connect(mapStateToProps)(Category);
+export default withRouter(connect(mapStateToProps, { fetchQuestion })(Category));
